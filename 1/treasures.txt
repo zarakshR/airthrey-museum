@@ -1,11 +1,11 @@
-1124	Balance
-7634	Farm machine
-287	Forklift truck
-4343	Globe
-4455	Lock
-864	Plaque
-46803	Radio
-421	Ring
-999	Telephone
-232323	Tops
-1111	Trophy
+Lock	2248
+Farm machine	7634
+Forklift truck	287
+Globe	4343
+Balanceasd	4455
+Plaque	864
+Radio	46803
+Ring	421
+Telephone	999
+Tops	232323
+Trophy	1111

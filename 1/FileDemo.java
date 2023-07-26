@@ -21,16 +21,16 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class FileDemo
-    extends JFrame
-    implements ActionListener     // For the JButton handling and item selection in the JComboBox
+        extends JFrame
+        implements ActionListener // For the JButton handling and item selection in the JComboBox
 {
 
     // Set up the application
     public static void main(String[] args) {
 
         FileDemo demo = new FileDemo();
-        demo.setSize(300,200);       // Width, height of window
-        demo.setLocation(200,100);   // Where on the screen
+        demo.setSize(300, 200); // Width, height of window
+        demo.setLocation(200, 100); // Where on the screen
         demo.setVisible(true);
 
     } // main
@@ -39,18 +39,24 @@ public class FileDemo
     public FileDemo() {
 
         setTitle("Files demonstration");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);   // For main close box click event
-        init();                                    // Set up the GUI and data
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // For main close box click event
+        init(); // Set up the GUI and data
 
     } // FileDemo
 
-    private DataStore theData = new DataStore();         // Create a new DataStore object to hold all the data
+    private DataStore theData = new DataStore(); // Create a new DataStore object to hold all the data
 
     private JButton doubleButton = new JButton("Double"), // The buttons for the GUI
-                    storeButton  = new JButton("Store");
+            storeButton = new JButton("Store"),
+            updateDescriptionButton = new JButton("Update Description");
 
-    private JComboBox<String> textChoice = new JComboBox<String>();      // For displaying a selectable text list
-    private JTextField numberField = new JTextField(10); // For diplaying the number associated with the selected text item
+    private JComboBox<String> textChoice = new JComboBox<String>(); // For displaying a selectable text list
+    private JTextField numberField = new JTextField(10); // For diplaying the number associated with the selected text
+                                                         // item
+    private JTextField descriptionField = new JTextField(80); // For diplaying the description text box that the user
+                                                              // will use to update the description
+                                                              // text
+    // item
 
     // Read the data file into the object theData, and set up the GUI
     public void init() {
@@ -58,7 +64,7 @@ public class FileDemo
         // Instruct the DataStore object theData to read in the data file
         theData.readData();
 
-        //Set up the GUI
+        // Set up the GUI
         Container contentPane = getContentPane();
         contentPane.setLayout(new FlowLayout());
 
@@ -68,7 +74,11 @@ public class FileDemo
         contentPane.add(storeButton);
         storeButton.addActionListener(this);
 
-        // Tell theData to fill up the drop-down JComboBox textChoice with the text items,
+        contentPane.add(updateDescriptionButton);
+        updateDescriptionButton.addActionListener(this);
+
+        // Tell theData to fill up the drop-down JComboBox textChoice with the text
+        // items,
         // add textChoice to the display,
         // and set it to notify actionPerformed when an item is selected
         theData.fillChoice(textChoice);
@@ -78,6 +88,10 @@ public class FileDemo
         // Display numberField, and disable user editing
         contentPane.add(numberField);
         numberField.setEditable(false);
+
+        // Display the description text box
+        contentPane.add(descriptionField);
+        descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
 
         // Finally, make sure that initial display in numberField
         // is consistent with the initially selected text item
@@ -91,15 +105,31 @@ public class FileDemo
         if (e.getSource() == doubleButton) {
             // Need to double the currently selected integer
             // First find out Which text item is selected
-            String chosen = (String)textChoice.getSelectedItem();
-            // Now tell theData to find chosen in its data store and to double the number associated with it
+            String chosen = (String) textChoice.getSelectedItem();
+            // Now tell theData to find chosen in its data store and to double the number
+            // associated with it
             theData.doubleNumber(chosen);
             // Finally update the number field display
             updateNumberField();
         }
+
         if (e.getSource() == storeButton)
             // Tell theData to write its contents back to the file
             theData.writeData();
+
+        if (e.getSource() == updateDescriptionButton) {
+            // Get the text currently in the description text box
+            String newDescription = descriptionField.getText();
+            // Get the currently selected text entry
+            int choice_n = textChoice.getSelectedIndex();
+            // Update entries with the new description
+            theData.updateDescription(newDescription, choice_n);
+            // Re-populate textChoice completely and re-select the currently selected index
+            // This is inefficient but simple; I am holding off from any optimizations
+            // because the dataset is currently small
+            theData.fillChoice(textChoice);
+            textChoice.setSelectedIndex(choice_n);
+        }
 
         if (e.getSource() == textChoice) {
             // Handle an event from the combo box list: it might be an item
@@ -113,12 +143,12 @@ public class FileDemo
             // with the new currently selected text, or set to blank if nothing is selected.
             // The check for "nothing selected" can be done here, or in updateNumberField
             // (in this example code it is done in both).
-            if (textChoice.getSelectedIndex() == -1) {   // -1 indicates "nothing selected"
+            if (textChoice.getSelectedIndex() == -1) { // -1 indicates "nothing selected"
                 // No item is currently selected
                 numberField.setText("");
-            }
-            else
-                updateNumberField();
+            } else
+                descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
+            updateNumberField();
         }
 
     } // actionPerformed
@@ -129,12 +159,12 @@ public class FileDemo
     private void updateNumberField() {
 
         // First find out which text item is selected
-        String chosen = (String)textChoice.getSelectedItem();  // Will be null if nothing selected
+        String chosen = (String) textChoice.getSelectedItem(); // Will be null if nothing selected
         if (chosen == null) {
             numberField.setText("");
-        }
-        else {
-            // Then ask theData to look up the chosen text in its data store, and to return the associated number
+        } else {
+            // Then ask theData to look up the chosen text in its data store, and to return
+            // the associated number
             int theNumber = theData.lookupNumber(chosen);
             // Finally display the number in the number field
             numberField.setText(Integer.toString(theNumber));

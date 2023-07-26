@@ -1,3 +1,5 @@
+// My code assumes that each number maps to a unique entry (i.e., the number field is a primary key)
+
 /*
    DataStore class supporting the main FileDemo program
 
@@ -27,8 +29,12 @@
       by increasing "top" and inserting the new data into the elements
       indicated by "top".
 
+   * updateDescription: Change the description (text part) of an entry to a given string
+
    o lookupNumber: Given a text, seeks it in the texts array and returns the
       corresponding number from the numbers array.
+
+   * lookupText: Lookup the text entry at a specific index
 
    o doubleNumber: Given a text, seeks it in the texts array and doubles the
      number in the corresponding element of the numbers array.
@@ -60,7 +66,7 @@ class DataStore {
 
         top = -1; // Empty current data storage by adjusting the top index.
         try {
-            BufferedReader input = new BufferedReader(new FileReader("treasure.txt"));
+            BufferedReader input = new BufferedReader(new FileReader("treasures.txt"));
             String dataLine; // To receive each line from the file
 
             while ((dataLine = input.readLine()) != null) { // Get next line from file
@@ -104,7 +110,7 @@ class DataStore {
     public void writeData() {
 
         try {
-            BufferedWriter output = new BufferedWriter(new FileWriter("data.txt"));
+            BufferedWriter output = new BufferedWriter(new FileWriter("treasures.txt"));
 
             // Process each stored text/number pair from 0 to top
             for (int i = 0; i <= top; i++) {
@@ -141,6 +147,11 @@ class DataStore {
 
     } // addEntry
 
+    // Update texts at the given index with newDescription
+    public void updateDescription(String newDescription, int n) {
+        texts[n] = newDescription;
+    }
+
     // Search for the given text in the texts array,
     // and return the corresponding number, or 0 if not found.
     // (0 is not a clever way to deal with "not found" but it will do for now!)
@@ -157,6 +168,10 @@ class DataStore {
         return 0;
 
     } // lookupNumber
+
+    public String lookupText(int n) {
+        return texts[n];
+    }
 
     // Search for the given text in the texts array,
     // and double the corresponding number, or no action if not found
