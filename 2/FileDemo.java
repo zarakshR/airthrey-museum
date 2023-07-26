@@ -54,9 +54,10 @@ public class FileDemo
     private JTextField numberField = new JTextField(10); // For diplaying the number associated with the selected text
                                                          // item
     private JTextField descriptionField = new JTextField(80); // For diplaying the description text box that the user
-                                                              // will use to update the description
-                                                              // text
-    // item
+                                                              // will use to update the description text
+
+    private DrawingPanel drawingPanel = new DrawingPanel(); // The panel on which we'll draw our images
+    private Image currentImage; // Holds the currently displayed image
 
     // Read the data file into the object theData, and set up the GUI
     public void init() {
@@ -92,6 +93,9 @@ public class FileDemo
         // Display the description text box
         contentPane.add(descriptionField);
         descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
+
+        contentPane.add(drawingPanel);
+        drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(textChoice.getSelectedIndex())));
 
         // Finally, make sure that initial display in numberField
         // is consistent with the initially selected text item
@@ -146,8 +150,11 @@ public class FileDemo
             if (textChoice.getSelectedIndex() == -1) { // -1 indicates "nothing selected"
                 // No item is currently selected
                 numberField.setText("");
-            } else
+                currentImage = null;
+            } else {
                 descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
+                drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(textChoice.getSelectedIndex())));
+            }
             updateNumberField();
         }
 
