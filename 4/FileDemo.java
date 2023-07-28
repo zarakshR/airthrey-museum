@@ -53,6 +53,8 @@ public class FileDemo
             searchButton = new JButton("Search");
 
     private JComboBox<String> textChoice = new JComboBox<String>();
+    private JComboBox<String> roomChoice = new JComboBox<String>();
+    private JComboBox<String> perRoomChoice = new JComboBox<String>();
 
     private JTextField numberField = new JTextField(10);
     private JTextField descriptionField = new JTextField(40);
@@ -63,6 +65,7 @@ public class FileDemo
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JPanel listPanel = new JPanel();
     private JPanel searchPanel = new JPanel();
+    private JPanel filterPanel = new JPanel();
 
     // Read the data file into the object theData, and set up the GUI
     public void init() {
@@ -79,11 +82,15 @@ public class FileDemo
         storeButton.addActionListener(this);
         updateDescriptionButton.addActionListener(this);
         searchButton.addActionListener(this);
+        roomChoice.addActionListener(this);
+        perRoomChoice.addActionListener(this);
 
         // Tell theData to fill up the drop-down JComboBox textChoice with the text
         // items, add textChoice to the display, and set it to notify actionPerformed
         // when an item is selected
         theData.fillChoice(textChoice);
+        theData.fillRoomNumbers(roomChoice);
+        theData.fillChoice(perRoomChoice, (String) roomChoice.getSelectedItem());
         textChoice.addActionListener(this);
 
         // Display numberField, and disable user editing
@@ -96,6 +103,7 @@ public class FileDemo
         contentPane.add(tabbedPane);
         tabbedPane.add("List of Treasures", listPanel);
         tabbedPane.add("Search", searchPanel);
+        tabbedPane.add("Filter", filterPanel);
 
         listPanel.add(numberField);
         listPanel.add(textChoice);
@@ -106,6 +114,9 @@ public class FileDemo
 
         searchPanel.add(searchQueryField);
         searchPanel.add(searchButton);
+
+        filterPanel.add(roomChoice);
+        filterPanel.add(perRoomChoice);
 
         // Finally, make sure that initial display in numberField
         // is consistent with the initially selected text item
@@ -154,6 +165,28 @@ public class FileDemo
             } else {
                 System.out.println(searchQueryField.getText() + "Not found!");
             }
+        }
+
+        if (e.getSource() == roomChoice) {
+
+            if (roomChoice.getSelectedIndex() == -1) {
+                perRoomChoice.removeAllItems();
+            } else {
+                theData.fillChoice(perRoomChoice, (String) roomChoice.getSelectedItem());
+            }
+
+        }
+
+        if (e.getSource() == perRoomChoice) {
+
+            if (perRoomChoice.getSelectedIndex() != -1) {
+                int object_index = theData.searchByName((String) perRoomChoice.getSelectedItem());
+                descriptionField.setText(theData.lookupText(object_index));
+                drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(object_index)));
+                textChoice.setSelectedIndex(object_index);
+                updateNumberField();
+            }
+
         }
 
         if (e.getSource() == textChoice) {

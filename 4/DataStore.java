@@ -55,6 +55,7 @@ class DataStore {
 
     private String[] texts = new String[MAX]; // Three arrays for data storage
     private String[] imagePaths = new String[MAX];
+    private String[] roomNumbers = new String[MAX];
     private int[] numbers = new int[MAX];
     private int top = -1; // Entries indexed 0..top of the arrays are occupied
 
@@ -76,7 +77,8 @@ class DataStore {
 
                 int tabpos1; // Splits upto end of text part
                 int tabpos2; // Splits upto end of number part
-                // text after tabpos2 will be the image path
+                int tabpos3; // Splits upto end of image path part
+                // text after tabpos3 will be the room number
 
                 // Find the position of the *first* tab for splitting the line
                 tabpos1 = dataLine.indexOf('\t');
@@ -92,11 +94,18 @@ class DataStore {
                     break;
                 }
 
+                tabpos3 = dataLine.indexOf('\t', tabpos2 + 1);
+                if (tabpos3 < 0) {
+                    System.out.println("Diagnostic: Ill-formatted tabs or missing data");
+                    break;
+                }
+
                 // Split the line: extract the parts of the string up to the tab,
                 // and from after the tab to the end of the string
                 String textPart = dataLine.substring(0, tabpos1);
                 String numberPart = dataLine.substring(tabpos1 + 1, tabpos2);
-                String imagePathPart = dataLine.substring(tabpos2 + 1);
+                String imagePathPart = dataLine.substring(tabpos2 + 1, tabpos3);
+                String roommNumberPart = dataLine.substring(tabpos3 + 1);
 
                 // Convert numberPart to a proper int for storing
                 int n = 0; // To hold the converted number
@@ -109,8 +118,13 @@ class DataStore {
 
                 // We now have the text and number parts,
                 // so store the data obtained as next entry in the arrays
-                addEntry(textPart, n, imagePathPart);
+                addEntry(textPart, n, imagePathPart, roommNumberPart);
             }
+
+            for (String string : roomNumbers) {
+                System.out.print(string);
+            }
+            System.out.println("DataStore.readData()");
 
             input.close(); // File finished, arrays full or bad data, so close file
         } catch (IOException ex) {
@@ -131,7 +145,8 @@ class DataStore {
                 // Build a correctly structured string as an output line:
                 // the two corresponding array items are separated by a tab
                 String theNumber = Integer.toString(numbers[i]);
-                String outputLine = texts[i] + "\t" + theNumber + "\t" + imagePaths[i];
+
+                String outputLine = texts[i] + "\t" + theNumber + "\t" + imagePaths[i] + "\t" + roomNumbers[i];
                 // And output the line to the file, followed by a new line
                 output.write(outputLine);
                 output.newLine();
@@ -148,7 +163,7 @@ class DataStore {
     // Add one more text/number entry to the arrays, if there is space.
     // If there is no space left, the new data is simply ignored, with no error
     // report
-    public void addEntry(String text, int n, String imagePath) {
+    public void addEntry(String text, int n, String imagePath, String roomNumber) {
 
         if (top == MAX - 1)
             return; // If arrays are full: no addition of data
@@ -158,6 +173,7 @@ class DataStore {
         texts[top] = text; // and put the data into that space
         numbers[top] = n;
         imagePaths[top] = imagePath;
+        roomNumbers[top] = roomNumber;
 
     } // addEntry
 
@@ -185,6 +201,10 @@ class DataStore {
 
     public String lookupText(int n) {
         return texts[n];
+    }
+
+    public String lookupRoomNumber(int n) {
+        return roomNumbers[n];
     }
 
     public String lookupImagePath(int n) {
@@ -218,6 +238,60 @@ class DataStore {
             }
 
     } // doubleNumbers
+
+    // Fills list with all *unique* room numbers
+    public void fillRoomNumbers(JComboBox<String> list) {
+
+        list.removeAllItems();
+
+        String[] scratch = new String[MAX];
+
+        int flag;
+        int scratch_top = 0;
+
+        for (int i = 0; i < top; i++) {
+
+            flag = 0;
+
+            for (int j = 0; j < scratch_top; j++) {
+                if (scratch[j].compareTo(roomNumbers[i]) == 0) {
+                    flag = 1;
+                }
+            }
+
+            if (flag == 0) {
+                scratch[scratch_top] = roomNumbers[i];
+                scratch_top++;
+            }
+
+        }
+
+        for (int i = 0; i < scratch_top; i++) {
+            list.addItem(scratch[i]);
+        }
+
+        if (scratch_top >= 0) {
+            list.setSelectedIndex(0);
+        }
+    }
+
+    // Fills list with all items in a specific room
+    public void fillChoice(JComboBox<String> list, String roomNumber) {
+
+        list.removeAllItems();
+
+        int flag = 0;
+        for (int i = 0; i < top; i++) {
+            if (roomNumbers[i].compareTo(roomNumber) == 0) {
+                list.addItem(texts[i]);
+                flag = 1;
+            }
+        }
+
+        if (flag == 1) {
+            list.setSelectedIndex(0);
+        }
+    }
 
     // Fill up the given choice list with the contents of the texts array
     public void fillChoice(JComboBox<String> list) {
