@@ -29,7 +29,7 @@ public class FileDemo
     public static void main(String[] args) {
 
         FileDemo demo = new FileDemo();
-        demo.setSize(300, 200); // Width, height of window
+        demo.setSize(1200, 600); // Width, height of window
         demo.setLocation(200, 100); // Where on the screen
         demo.setVisible(true);
 
@@ -40,6 +40,7 @@ public class FileDemo
 
         setTitle("Files demonstration");
         setDefaultCloseOperation(EXIT_ON_CLOSE); // For main close box click event
+
         init(); // Set up the GUI and data
 
     } // FileDemo
@@ -48,16 +49,20 @@ public class FileDemo
 
     private JButton doubleButton = new JButton("Double"), // The buttons for the GUI
             storeButton = new JButton("Store"),
-            updateDescriptionButton = new JButton("Update Description");
+            updateDescriptionButton = new JButton("Update Description"),
+            searchButton = new JButton("Search");
 
-    private JComboBox<String> textChoice = new JComboBox<String>(); // For displaying a selectable text list
-    private JTextField numberField = new JTextField(10); // For diplaying the number associated with the selected text
-                                                         // item
-    private JTextField descriptionField = new JTextField(80); // For diplaying the description text box that the user
-                                                              // will use to update the description text
+    private JComboBox<String> textChoice = new JComboBox<String>();
+
+    private JTextField numberField = new JTextField(10);
+    private JTextField descriptionField = new JTextField(40);
+    private JTextField searchQueryField = new JTextField(40);
 
     private DrawingPanel drawingPanel = new DrawingPanel(); // The panel on which we'll draw our images
-    private Image currentImage; // Holds the currently displayed image
+
+    private JTabbedPane tabbedPane = new JTabbedPane();
+    private JPanel listPanel = new JPanel();
+    private JPanel searchPanel = new JPanel();
 
     // Read the data file into the object theData, and set up the GUI
     public void init() {
@@ -70,32 +75,37 @@ public class FileDemo
         contentPane.setLayout(new FlowLayout());
 
         // The buttons notify actionPerformed when clicked
-        contentPane.add(doubleButton);
         doubleButton.addActionListener(this);
-        contentPane.add(storeButton);
         storeButton.addActionListener(this);
-
-        contentPane.add(updateDescriptionButton);
         updateDescriptionButton.addActionListener(this);
+        searchButton.addActionListener(this);
 
         // Tell theData to fill up the drop-down JComboBox textChoice with the text
-        // items,
-        // add textChoice to the display,
-        // and set it to notify actionPerformed when an item is selected
+        // items, add textChoice to the display, and set it to notify actionPerformed
+        // when an item is selected
         theData.fillChoice(textChoice);
-        contentPane.add(textChoice);
         textChoice.addActionListener(this);
 
         // Display numberField, and disable user editing
-        contentPane.add(numberField);
         numberField.setEditable(false);
-
-        // Display the description text box
-        contentPane.add(descriptionField);
         descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
 
         contentPane.add(drawingPanel);
         drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(textChoice.getSelectedIndex())));
+
+        contentPane.add(tabbedPane);
+        tabbedPane.add("List of Treasures", listPanel);
+        tabbedPane.add("Search", searchPanel);
+
+        listPanel.add(numberField);
+        listPanel.add(textChoice);
+        listPanel.add(descriptionField);
+        listPanel.add(updateDescriptionButton);
+        listPanel.add(doubleButton);
+        listPanel.add(storeButton);
+
+        searchPanel.add(searchQueryField);
+        searchPanel.add(searchButton);
 
         // Finally, make sure that initial display in numberField
         // is consistent with the initially selected text item
@@ -135,6 +145,17 @@ public class FileDemo
             textChoice.setSelectedIndex(choice_n);
         }
 
+        if (e.getSource() == searchButton) {
+            int search_res = theData.searchByName(searchQueryField.getText());
+
+            if (search_res != -1) {
+                theData.fillChoice(textChoice);
+                textChoice.setSelectedIndex(search_res);
+            } else {
+                System.out.println(searchQueryField.getText() + "Not found!");
+            }
+        }
+
         if (e.getSource() == textChoice) {
             // Handle an event from the combo box list: it might be an item
             // selection, or deselection or some other change to the combo box.
@@ -150,7 +171,6 @@ public class FileDemo
             if (textChoice.getSelectedIndex() == -1) { // -1 indicates "nothing selected"
                 // No item is currently selected
                 numberField.setText("");
-                currentImage = null;
             } else {
                 descriptionField.setText(theData.lookupText(textChoice.getSelectedIndex()));
                 drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(textChoice.getSelectedIndex())));

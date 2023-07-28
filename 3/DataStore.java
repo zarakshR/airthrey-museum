@@ -179,7 +179,7 @@ class DataStore {
                 return numbers[i];
 
         // Execution will only arrive here if didn't find the required entry
-        return 0;
+        return -1;
 
     } // lookupNumber
 
@@ -190,6 +190,17 @@ class DataStore {
     public String lookupImagePath(int n) {
         System.out.println("Requested: " + imagePaths[n]);
         return imagePaths[n];
+    }
+
+    public int searchByName(String query) {
+        System.out.println("Search request: " + query);
+        for (int i = 0; i < top; i++) {
+            if (texts[i].compareTo(query) == 0) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     // Search for the given text in the texts array,
