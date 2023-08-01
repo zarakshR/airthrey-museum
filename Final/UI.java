@@ -53,157 +53,40 @@ public class UI extends JFrame {
 
     }
 
-    class MainPanel extends JPanel {
-
-        class ControlButtons extends JPanel {
-
-            public JButton save = new JButton("Save Changes");
-            public JButton print = new JButton("Print Entry");
-            public JButton update = new JButton("Update Entry");
-            public JButton delete = new JButton("Delete Entry");
-            public JButton undo = new JButton("Undo Deletion");
-
-            public ControlButtons() {
-
-                save.addActionListener(action_listener);
-                print.addActionListener(action_listener);
-                update.addActionListener(action_listener);
-                delete.addActionListener(action_listener);
-                undo.addActionListener(action_listener);
-
-                add(save);
-                add(print);
-                add(update);
-                add(delete);
-                add(undo);
-
-            }
-
-        }
-
-        private DrawingPanel drawing_panel = new DrawingPanel();
-        private LabelledText name = new LabelledText("Name:", 20);
-        private LabelledText category = new LabelledText("Category:", 10);
-        private LabelledText image_path = new LabelledText("Image Path:", 20);
-        public ControlButtons control_buttons = new ControlButtons();
-
-        public MainPanel() {
-
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-            add(drawing_panel);
-            add(name);
-            add(category);
-            add(image_path);
-            add(control_buttons);
-
-        }
-
-    }
-
-    class TabbedPane extends JPanel {
-
-        class CatalogueTab extends JPanel {
-
-            private DefaultListModel<String> list_model = new DefaultListModel<String>();
-            public JList<String> list = new JList<>(list_model);
-            public JComboBox<String> room_filter = new JComboBox<>();
-            public JComboBox<String> category_filter = new JComboBox<>();
-
-            public CatalogueTab() {
-
-                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-                list_model.addElement("ASD1");
-                list_model.addElement("ASD2");
-                list_model.addElement("ASD3");
-                list_model.addElement("ASD4");
-                list_model.addElement("ASD5");
-                list_model.addElement("ASD6");
-
-                list.addListSelectionListener(list_selection_listener);
-                add(list);
-
-                add(new JLabel("Filter by Room"));
-                room_filter.addActionListener(action_listener);
-                add(room_filter);
-
-                add(new JLabel("Filter by Category"));
-                category_filter.addActionListener(action_listener);
-                add(category_filter);
-
-            }
-
-        }
-
-        class SearchTab extends JPanel {
-
-            private LabelledText query = new LabelledText("Query:", 20);
-            public JButton name_search = new JButton("Search By Name");
-            public JButton number_search = new JButton("Search By Catalogue No.");
-
-            public SearchTab() {
-
-                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-                add(query);
-
-                name_search.addActionListener(action_listener);
-                add(name_search);
-
-                number_search.addActionListener(action_listener);
-                add(number_search);
-
-            }
-
-        }
-
-        class CreateTab extends JPanel {
-
-            private LabelledText name = new LabelledText("Name:", 20);
-            private LabelledText category = new LabelledText("Category:", 10);
-            private LabelledText image_path = new LabelledText("Image Path:", 20);
-            public JButton create = new JButton("Create New Entry");
-
-            public CreateTab() {
-
-                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-                add(name);
-                add(category);
-                add(image_path);
-
-                create.addActionListener(action_listener);
-                add(create);
-
-            }
-
-        }
-
-        public CatalogueTab catalogue_tab = new CatalogueTab();
-        public SearchTab search_tab = new SearchTab();
-        public CreateTab create_tab = new CreateTab();
-
-        private JTabbedPane tabbed_pane = new JTabbedPane();
-
-        public TabbedPane() {
-
-            this.setMinimumSize(new Dimension(650, 600));
-
-            this.tabbed_pane.add("Catalogue", this.catalogue_tab);
-            this.tabbed_pane.add("Search", this.search_tab);
-            this.tabbed_pane.add("Create Entry", this.create_tab);
-
-            this.add(this.tabbed_pane);
-
-        }
-
-    }
-
     Container container = getContentPane();
 
-    public TabbedPane tabs;
-    public MainPanel display;
+    private DefaultListModel<Treasure> list_model = new DefaultListModel<>();
+
+    private JPanel display = new JPanel();
+    private DrawingPanel drawing_panel = new DrawingPanel();
+    private LabelledText name = new LabelledText("Name:", 20);
+    private LabelledText category = new LabelledText("Category:", 10);
+    private LabelledText image_path = new LabelledText("Image Path:", 20);
+
+    private JPanel control_buttons = new JPanel();
+    public JButton save = new JButton("Save Changes");
+    public JButton print = new JButton("Print Entry");
+    public JButton update = new JButton("Update Entry");
+    public JButton delete = new JButton("Delete Entry");
+    public JButton undo = new JButton("Undo Deletion");
+
+    private JTabbedPane tabbed_pane = new JTabbedPane();
+
+    private JPanel catalogue_tab = new JPanel();
+    public JList<Treasure> list = new JList<>(list_model);
+    public DefaultComboBoxModel<String> category_filter_model = new DefaultComboBoxModel<>();
+    public JComboBox<String> category_filter = new JComboBox<>(category_filter_model);
+
+    private JPanel create_tab = new JPanel();
+    private LabelledText new_name = new LabelledText("Name:", 20);
+    private LabelledText new_category = new LabelledText("Category:", 10);
+    private LabelledText new_image_path = new LabelledText("Image Path:", 20);
+    public JButton create_button = new JButton("Create New Entry");
+
+    private JPanel search_tab = new JPanel();
+    private LabelledText query = new LabelledText("Query:", 20);
+    public JButton name_search_button = new JButton("Search By Name");
+    public JButton number_search_button = new JButton("Search By Catalogue No.");
 
     private ActionListener action_listener;
     private ListSelectionListener list_selection_listener;
@@ -213,12 +96,80 @@ public class UI extends JFrame {
         this.action_listener = action_listener;
         this.list_selection_listener = list_selection_listener;
 
-        this.tabs = new TabbedPane();
-        this.display = new MainPanel();
-
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-        container.add(tabs);
+
+        container.add(tabbed_pane);
         container.add(display);
+
+        // ----------------------------------------------------------------
+        // MAIN DISPLAY - Shows the selected entry's image, name, category, image_path, and the control buttons vertically aligned
+        display.setLayout(new BoxLayout(display, BoxLayout.Y_AXIS));
+        display.add(drawing_panel);
+        display.add(name);
+        display.add(category);
+        display.add(image_path);
+        display.add(control_buttons);
+
+        // Buttons for saving changes, printing, updating changes, deleting entries, and undoing deletions
+        control_buttons.add(save);
+        control_buttons.add(print);
+        control_buttons.add(update);
+        control_buttons.add(delete);
+        control_buttons.add(undo);
+
+        save.addActionListener(action_listener);
+        print.addActionListener(action_listener);
+        update.addActionListener(action_listener);
+        delete.addActionListener(action_listener);
+        undo.addActionListener(action_listener);
+        // END MAIN DISPLAY
+        // ----------------------------------------------------------------
+        // CATALOGUE TAB - Shows a list of entries and a drop down box to filter by category
+        tabbed_pane.add("Catalogue", catalogue_tab);
+
+        list.addListSelectionListener(list_selection_listener);
+        catalogue_tab.add(list);
+
+        catalogue_tab.add(new JLabel("Filter by Category"));
+        category_filter.addActionListener(action_listener);
+        catalogue_tab.add(category_filter);
+        // END CATALOGUE TAB
+        // ----------------------------------------------------------------
+        // SEARCH TAB - A text field to input search queries and buttons to search by name or catalogue number
+        tabbed_pane.add("Search", search_tab);
+
+        search_tab.add(query);
+
+        name_search_button.addActionListener(action_listener);
+        search_tab.add(name_search_button);
+
+        number_search_button.addActionListener(action_listener);
+        search_tab.add(number_search_button);
+        // END SEARCH TAB
+        // ----------------------------------------------------------------
+        // CREATE TAB - Text fields to add name, category, and image paths of treasure to be added and a button to create treasure
+        tabbed_pane.add("Create Entry", create_tab);
+
+        create_tab.add(new_name);
+        create_tab.add(new_category);
+        create_tab.add(new_image_path);
+
+        create_button.addActionListener(action_listener);
+        create_tab.add(create_button);
+        // END CREATE TAB
+        // ----------------------------------------------------------------
+    }
+
+
+
+
+
+            }
+        }
+
+    }
+
+
 
     }
 
