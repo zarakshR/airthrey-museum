@@ -264,6 +264,10 @@ class DataStore {
 
         list.removeAllItems();
 
+        if (roomNumber == null) {
+            return;
+        }
+
         int flag = 0;
         for (int i = 0; i < top; i++) {
             if (roomNumbers[i].compareTo(roomNumber) == 0) {
