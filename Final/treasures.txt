@@ -1,12 +1,11 @@
-Lock	2248	images/lock.jpg	1
-Farm machine	7635	images/tractor.jpg	2
-Forklift truck	288	images/truck.jpg	2
-Globe	4344	images/globe.jpg	3
-Balance	4456	images/balance.jpg	1
-Plaque	865	images/plaque.jpg	1
-Radio	46804	images/radio.jpg	3
-Ring	422	images/ring.jpg	1
-Telephone	1000	images/phone.jpg	3
-Tops	232324	images/tops.jpg	4
-Trophy	1112	images/trophy.jpg	1
-Name	1234	images/name.jpg	12
+2248	Lock	images/lock.jpg	Furniture
+7635	Farm machine	images/tractor.jpg	Vehicle
+288	Forklift truck	images/truck.jpg	Vehicle
+4344	Globe	images/globe.jpg	Technology
+4456	Balance	images/balance.jpg	Tools
+865	Plaque	images/plaque.jpg	Furniture
+46804	Radio	images/radio.jpg	Technology
+422	Ring	images/ring.jpg	Clothing
+1000	Telephone	images/phone.jpg	Technology
+232324	Tops	images/tops.jpg	Clothing
+1112	Trophy	images/trophy.jpg	Furniture
