@@ -47,9 +47,10 @@ public class FileDemo
 
     private DataStore theData = new DataStore(); // Create a new DataStore object to hold all the data
 
-    private JButton storeButton = new JButton("Store"),
-            updateDescriptionButton = new JButton("Update Description"),
-            searchButton = new JButton("Search");
+    private JButton storeButton = new JButton("Store");
+    private JButton updateDescriptionButton = new JButton("Update Description");
+    private JButton searchButton = new JButton("Search");
+    private JButton printButton = new JButton("Print Treasure");
 
     private JComboBox<String> textChoice = new JComboBox<String>();
     private JComboBox<String> roomChoice = new JComboBox<String>();
@@ -82,6 +83,7 @@ public class FileDemo
         searchButton.addActionListener(this);
         roomChoice.addActionListener(this);
         perRoomChoice.addActionListener(this);
+        printButton.addActionListener(this);
 
         // Tell theData to fill up the drop-down JComboBox textChoice with the text
         // items, add textChoice to the display, and set it to notify actionPerformed
@@ -108,6 +110,7 @@ public class FileDemo
         listPanel.add(descriptionField);
         listPanel.add(updateDescriptionButton);
         listPanel.add(storeButton);
+        listPanel.add(printButton);
 
         searchPanel.add(searchQueryField);
         searchPanel.add(searchButton);
@@ -195,6 +198,33 @@ public class FileDemo
                 drawingPanel.setImage(getToolkit().getImage(theData.lookupImagePath(textChoice.getSelectedIndex())));
             }
             updateNumberField();
+        }
+
+        if (e.getSource() == printButton) {
+            PrintJob printJob = getToolkit().getPrintJob(this, "Print " + textChoice.getSelectedItem(), null);
+            if (printJob == null) {
+                System.err.println("Printing failed or cancelled");
+                return;
+            }
+
+            Graphics g = printJob.getGraphics();
+            int choice_n = textChoice.getSelectedIndex();
+
+            int xLocation = 10;
+            int yLocation = 10;
+            g.drawString("Name: " + theData.lookupText(choice_n), xLocation, yLocation);
+
+            yLocation += 20;
+            g.drawString("Room Number: " + theData.lookupRoomNumber(choice_n), xLocation, yLocation);
+
+            yLocation += 20;
+            g.drawString("Image Path: " + theData.lookupImagePath(choice_n), xLocation, yLocation);
+
+            yLocation += 30;
+            g.drawImage(drawingPanel.getImage(), xLocation, yLocation, 400, 400, this);
+
+            g.dispose();
+            printJob.end();
         }
 
     } // actionPerformed
