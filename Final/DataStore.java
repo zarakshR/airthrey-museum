@@ -17,8 +17,8 @@ record Treasure(String name, String catalogue_number, String category, String im
 
 class DataStore {
 
-    String filename;
-    HashSet<Treasure> treasures = new HashSet<>();
+    private String filename;
+    public HashSet<Treasure> treasures = new HashSet<>();
 
     public DataStore(String filename) {
 
