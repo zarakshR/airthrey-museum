@@ -48,11 +48,33 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.delete) {
-            System.out.println("DELETE");
+            Treasure selected_value = ui.list.getSelectedValue();
+            if (selected_value == null) {
+                System.err.println("nothing selected");
+                return;
+            }
+
+            store.delete(selected_value);
+
+            // Reload the entries; make sure to check if a filter is selected and reload appropriately
+            String selected_filter = (String) ui.category_filter.getSelectedItem();
+            if (selected_filter == null) {
+                ui.loadEntries(store.treasures);
+            } else {
+                ui.loadEntries(store.treasures, selected_filter);
+            }
         }
 
         if (e.getSource() == ui.undo) {
-            System.out.println("UNDO");
+            Treasure undone = store.undo();
+            if (undone == null) {
+                System.err.println("Undo stack empty");
+                return;
+            }
+
+            // Refocus on the just-undeleted treasure
+            ui.loadEntries(store.treasures);
+            ui.focus(undone);
         }
 
         if (e.getSource() == ui.category_filter) {

@@ -1,5 +1,7 @@
 import java.io.*;
+import java.util.EmptyStackException;
 import java.util.HashSet;
+import java.util.Stack;
 
 record Treasure(String name, String catalogue_number, String category, String image_path) {
 
@@ -19,6 +21,7 @@ class DataStore {
 
     private String filename;
     public HashSet<Treasure> treasures = new HashSet<>();
+    private Stack<Treasure> undo_stack = new Stack<>();
 
     public DataStore(String filename) {
 
@@ -98,5 +101,20 @@ class DataStore {
 
         return null;
 
+    }
+
+    public void delete(Treasure t) {
+        undo_stack.add(t);
+        treasures.remove(t);
+    }
+
+    public Treasure undo() {
+        try {
+            Treasure t = undo_stack.pop();
+            treasures.add(t);
+            return t;
+        } catch (EmptyStackException e) {
+            return null;
+        }
     }
 }
