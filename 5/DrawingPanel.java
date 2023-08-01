@@ -25,6 +25,10 @@ public class DrawingPanel extends JPanel {
 
     } // setImage
 
+    public Image getImage() {
+        return image;
+    }
+
     // And this actually draws the image, centred in the panel:
     public void paintComponent(Graphics g) {
 
