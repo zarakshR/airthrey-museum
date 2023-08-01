@@ -56,7 +56,14 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.category_filter) {
-            System.out.println("CATEGORY FILTER");
+            String selected_filter = (String) ui.category_filter.getSelectedItem();
+
+            // If nothing is selected, then load all entries, otherwise load entries filtered by the selected filter
+            if (selected_filter == null) {
+                ui.loadEntries(store.treasures);
+            } else {
+                ui.loadEntries(store.treasures, selected_filter);
+            }
         }
 
         if (e.getSource() == ui.clear_filter_button) {

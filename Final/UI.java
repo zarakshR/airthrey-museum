@@ -168,12 +168,15 @@ public class UI extends JFrame {
     // Load all treasures from the given hash set into list_model
     public void loadEntries(HashSet<Treasure> treasures) {
 
+        list_model.removeAllElements();
         list_model.addAll(treasures);
 
     }
 
     // Like above but only add the treasures whose categories match the given category
     public void loadEntries(HashSet<Treasure> treasures, String category) {
+
+        list_model.removeAllElements();
 
         for (Treasure treasure : treasures) {
             if (treasure.category().compareTo(category) == 0) {
@@ -185,6 +188,8 @@ public class UI extends JFrame {
 
     // Find all unique categories from the given hash set and add them into category_filter_model
     public void loadFilters(HashSet<Treasure> treasures) {
+
+        category_filter_model.removeAllElements();
 
         // Use a set for the filters so duplicates get ignored automatically
         HashSet<String> filter_set = new HashSet<>();
