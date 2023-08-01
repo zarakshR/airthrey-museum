@@ -4,8 +4,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-public class Museum implements ActionListener, ListSelectionListener
-{
+public class Museum implements ActionListener, ListSelectionListener {
 
     private DataStore store;
     private UI ui;

@@ -60,8 +60,6 @@ class DataStore {
 
             input.close();
 
-            System.out.println(treasures);
-
         } catch (FileNotFoundException e) {
 
             System.err.println(e);
