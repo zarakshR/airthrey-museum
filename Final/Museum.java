@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.awt.event.*;
 
 import javax.swing.*;
@@ -39,7 +40,36 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.print) {
-            System.out.println("PRINT");
+            Treasure t = ui.list.getSelectedValue();
+
+            if (t == null) {
+                System.err.println("Attempting to print with nothing selected");
+                return;
+            }
+
+            PrintJob print_job = ui.getToolkit().getPrintJob(ui, "Printing " + t, null);
+            if (print_job == null) {
+                System.err.println("Printing failed or cancelled");
+                return;
+            }
+
+            Graphics graphics = print_job.getGraphics();
+
+            int xLocation = 10;
+            int yLocation = 20;
+            graphics.drawString("Name: " + t.name(), xLocation, yLocation);
+
+            yLocation += 20;
+            graphics.drawString("Category: " + t.category(), xLocation, yLocation);
+
+            yLocation += 20;
+            graphics.drawString("Image Path: " + t.image_path(), xLocation, yLocation);
+
+            yLocation += 30;
+            graphics.drawImage(ui.drawing_panel.getImage(), xLocation, yLocation, 400, 400, null);
+
+            graphics.dispose();
+            print_job.end();
         }
 
         if (e.getSource() == ui.update) {

@@ -68,7 +68,7 @@ public class UI extends JFrame {
     private DefaultListModel<Treasure> list_model = new DefaultListModel<>();
 
     private JPanel display = new JPanel();
-    private DrawingPanel drawing_panel = new DrawingPanel();
+    public DrawingPanel drawing_panel = new DrawingPanel(); // This has to be public so Museum can use it for pprinting. Maybe change later?
     private LabelledText number = new LabelledText("Catalogue No.:", 5);
     private LabelledText name = new LabelledText("Name:", 20);
     private LabelledText category = new LabelledText("Category:", 10);
