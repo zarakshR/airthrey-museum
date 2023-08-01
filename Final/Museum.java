@@ -71,11 +71,39 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.name_search_button) {
-            System.out.println("NAME SEARCH");
+            String query = ui.getSearchQuery();
+
+            if (query == null) {
+                System.err.println("query is null");
+                return;
+            }
+
+            Treasure search_result = store.searchByName(query);
+
+            if (search_result == null) {
+                System.err.println("No match found");
+                return;
+            }
+
+            ui.focus(search_result);
         }
 
         if (e.getSource() == ui.number_search_button) {
-            System.out.println("NUMBER SEARCH");
+            String query = ui.getSearchQuery();
+
+            if (query == null) {
+                System.err.println("query is null");
+                return;
+            }
+
+            Treasure search_result = store.searchByNumber(query);
+
+            if (search_result == null) {
+                System.err.println("No match found");
+                return;
+            }
+
+            ui.focus(search_result);
         }
 
         if (e.getSource() == ui.create_button) {

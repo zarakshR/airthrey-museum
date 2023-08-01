@@ -74,4 +74,29 @@ class DataStore {
     public void writeData() {
     }
 
+    // Searches for and returns the *first* treasure that matches the given name
+    public Treasure searchByName(String name) {
+
+        for (Treasure treasure : treasures) {
+            if (treasure.name().compareTo(name) == 0) {
+                return treasure;
+            }
+        }
+
+        return null;
+
+    }
+
+    // Same as above but searches by catalogue number
+    public Treasure searchByNumber(String number) {
+
+        for (Treasure treasure : treasures) {
+            if (treasure.catalogue_number().compareTo(number) == 0) {
+                return treasure;
+            }
+        }
+
+        return null;
+
+    }
 }
