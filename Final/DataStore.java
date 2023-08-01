@@ -3,6 +3,10 @@ import java.util.HashSet;
 
 record Treasure(String name, String catalogue_number, String category, String image_path) {
 
+    @Override
+    public String toString() {
+        return "(" + catalogue_number + ") " + name;
+    }
 }
 
 // The data format is -
