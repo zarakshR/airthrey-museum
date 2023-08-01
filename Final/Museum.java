@@ -86,8 +86,20 @@ public class Museum implements ActionListener, ListSelectionListener
 
     public void valueChanged(ListSelectionEvent e) {
 
+        // Do nothing if this isn't the user's final selection
+        if (e.getValueIsAdjusting()) {
+            return;
+        }
+
         if (e.getSource() == ui.list) {
-            System.out.println("LIST");
+            Treasure selected_value = ui.list.getSelectedValue();
+
+            // If nothing is selected, then focus on nothing, else focus on the selected entry
+            if (selected_value == null) {
+                ui.focus();
+            } else {
+                ui.focus(ui.list.getSelectedValue());
+            }
         }
 
     }
