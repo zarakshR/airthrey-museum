@@ -69,6 +69,7 @@ public class UI extends JFrame {
 
     private JPanel display = new JPanel();
     private DrawingPanel drawing_panel = new DrawingPanel();
+    private LabelledText number = new LabelledText("Catalogue No.:", 5);
     private LabelledText name = new LabelledText("Name:", 20);
     private LabelledText category = new LabelledText("Category:", 10);
     private LabelledText image_path = new LabelledText("Image Path:", 20);
@@ -90,6 +91,7 @@ public class UI extends JFrame {
 
     private JPanel create_tab = new JPanel();
     private LabelledText new_name = new LabelledText("Name:", 20);
+    private LabelledText new_number = new LabelledText("Catalogue No.:", 5);
     private LabelledText new_category = new LabelledText("Category:", 10);
     private LabelledText new_image_path = new LabelledText("Image Path:", 20);
     public JButton create_button = new JButton("Create New Entry");
@@ -116,6 +118,7 @@ public class UI extends JFrame {
         // MAIN DISPLAY - Shows the selected entry's image, name, category, image_path, and the control buttons vertically aligned
         display.setLayout(new BoxLayout(display, BoxLayout.Y_AXIS));
         display.add(drawing_panel);
+        display.add(number);
         display.add(name);
         display.add(category);
         display.add(image_path);
@@ -165,6 +168,7 @@ public class UI extends JFrame {
         tabbed_pane.add("Create Entry", create_tab);
 
         create_tab.add(new_name);
+        create_tab.add(new_number);
         create_tab.add(new_category);
         create_tab.add(new_image_path);
 
@@ -218,23 +222,51 @@ public class UI extends JFrame {
 
     // Make the main display panel "focus on" (i.e., change the name, category, image, etc to) the given treasure
     public void focus(Treasure t) {
+
         list.setSelectedValue(t, true);
         drawing_panel.setImage(getToolkit().getImage(t.image_path()));
         name.setText(t.name());
+        number.setText(t.catalogue_number());
         category.setText(t.category());
         image_path.setText(t.image_path());
+
     }
 
     // Focus on nothing
     public void focus() {
+
         list.setSelectedValue(null, false);
         drawing_panel.setImage(null);
         name.setText("");
+        number.setText("");
         category.setText("");
         image_path.setText("");
+
     }
 
     public String getSearchQuery() {
+
         return query.getText();
+
     }
+
+    // Get a new treasure that made from the values currently in the description boxes
+    public Treasure getEditedTreasure() {
+
+        String new_name = name.getText();
+        String new_number = number.getText();
+        String new_category = category.getText();
+        String new_image_path = image_path.getText();
+
+        if ((new_name.compareTo("") == 0)
+                || (new_number.compareTo("") == 0)
+                || (new_image_path.compareTo("") == 0)
+                || (new_category.compareTo("") == 0)) {
+            return null;
+        }
+
+        return new Treasure(new_name, new_number, new_category, new_image_path);
+
+    }
+
 }

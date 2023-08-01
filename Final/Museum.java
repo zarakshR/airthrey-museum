@@ -43,7 +43,31 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.update) {
-            System.out.println("UPDATE");
+            Treasure old = ui.list.getSelectedValue();
+            if (old == null) {
+                System.err.println("Attempting to update non-selected value");
+                return;
+            }
+
+            Treasure edited = ui.getEditedTreasure();
+            if (edited == null) {
+                System.err.println("Cannot update: One or more fileds empty");
+                return;
+            }
+
+            // remove old treasure and add new one, then reload entries, using a filter if one is selected
+            store.treasures.remove(old);
+            store.treasures.add(edited);
+
+            String selected_filter = (String) ui.category_filter.getSelectedItem();
+            if (selected_filter == null) {
+                ui.loadEntries(store.treasures);
+                ui.focus(edited);
+            } else {
+                ui.loadEntries(store.treasures, selected_filter);
+                ui.focus(edited);
+            }
+
         }
 
         if (e.getSource() == ui.delete) {
