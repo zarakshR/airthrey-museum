@@ -105,7 +105,7 @@ class DataStore {
                 String textPart = dataLine.substring(0, tabpos1);
                 String numberPart = dataLine.substring(tabpos1 + 1, tabpos2);
                 String imagePathPart = dataLine.substring(tabpos2 + 1, tabpos3);
-                String roommNumberPart = dataLine.substring(tabpos3 + 1);
+                String roomNumberPart = dataLine.substring(tabpos3 + 1);
 
                 // Convert numberPart to a proper int for storing
                 int n = 0; // To hold the converted number
@@ -118,7 +118,7 @@ class DataStore {
 
                 // We now have the text and number parts,
                 // so store the data obtained as next entry in the arrays
-                addEntry(textPart, n, imagePathPart, roommNumberPart);
+                addEntry(textPart, n, imagePathPart, roomNumberPart);
             }
 
             for (String string : roomNumbers) {
