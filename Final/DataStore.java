@@ -75,6 +75,21 @@ class DataStore {
     }
 
     public void writeData() {
+        try {
+
+            BufferedWriter output = new BufferedWriter(new FileWriter(filename));
+
+            for (Treasure treasure : treasures) {
+                output.write(
+                        treasure.catalogue_number() + "\t" + treasure.name() + "\t" + treasure.image_path() + "\t" + treasure.category() + "\n");
+            }
+
+            output.close();
+
+        } catch (IOException e) {
+
+        }
+
     }
 
     // Searches for and returns the *first* treasure that matches the given name

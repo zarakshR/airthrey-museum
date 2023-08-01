@@ -36,7 +36,7 @@ public class Museum implements ActionListener, ListSelectionListener
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == ui.save) {
-            System.out.println("SAVE");
+            store.writeData();
         }
 
         if (e.getSource() == ui.print) {
