@@ -5,63 +5,63 @@ import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.event.*;
 
+class LabelledText extends JPanel {
+
+    private JLabel label;
+    private JTextField text;
+
+    public LabelledText(String label, int columns) {
+
+        this.label = new JLabel(label);
+        this.text = new JTextField(columns);
+
+        this.add(this.label);
+        this.add(this.text);
+
+    }
+
+    public String getText() {
+        return text.getText();
+    }
+
+    public void setText(String text) {
+        this.text.setText(text);
+    }
+}
+
+class DrawingPanel extends JPanel {
+
+    private Image current_image;
+
+    public DrawingPanel() {
+
+        setPreferredSize(new Dimension(400, 400));
+
+    }
+
+    public void setImage(Image image) {
+        this.current_image = image;
+        repaint();
+    }
+
+    public Image getImage() {
+        return current_image;
+    }
+
+    public void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        if (current_image != null) {
+            int xOffset = (getWidth() - current_image.getWidth(this)) / 2;
+            int yOffset = (getHeight() - current_image.getHeight(this)) / 2;
+            g.drawImage(current_image, xOffset, yOffset, this);
+        }
+
+    }
+
+}
+
 public class UI extends JFrame {
-
-    static class LabelledText extends JPanel {
-
-        private JLabel label;
-        private JTextField text;
-
-        public LabelledText(String label, int columns) {
-
-            this.label = new JLabel(label);
-            this.text = new JTextField(columns);
-
-            this.add(this.label);
-            this.add(this.text);
-
-        }
-
-        public String getText() {
-            return text.getText();
-        }
-
-        public void setText(String text) {
-            this.text.setText(text);
-        }
-    }
-
-    static class DrawingPanel extends JPanel {
-
-        private Image current_image;
-
-        public DrawingPanel() {
-
-            setPreferredSize(new Dimension(400, 400));
-
-        }
-
-        public void setImage(Image image) {
-            this.current_image = image;
-            repaint();
-        }
-
-        public Image getImage() {
-            return current_image;
-        }
-
-        public void paintComponent(Graphics g) {
-
-            super.paintComponent(g);
-            if (current_image != null) {
-                int xOffset = (getWidth() - current_image.getWidth(this)) / 2;
-                int yOffset = (getHeight() - current_image.getHeight(this)) / 2;
-                g.drawImage(current_image, xOffset, yOffset, this);
-            }
-
-        }
-
-    }
 
     Container container = getContentPane();
 
