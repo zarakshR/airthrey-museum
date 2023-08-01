@@ -193,4 +193,9 @@ public class UI extends JFrame {
 
     }
 
+    public void clearFilters() {
+
+        category_filter.setSelectedItem(null);
+
+    }
 }

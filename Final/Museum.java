@@ -60,7 +60,7 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.clear_filter_button) {
-                System.out.println("CLEAR FILTER");
+            ui.clearFilters();
         }
 
         if (e.getSource() == ui.name_search_button) {
