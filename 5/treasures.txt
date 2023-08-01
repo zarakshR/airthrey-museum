@@ -1,11 +1,11 @@
-Lock	2248	lock.jpg	1
-Farm machine	7635	tractor.jpg	2
-Forklift truck	288	truck.jpg	2
-Globe	4344	globe.jpg	3
-Balance	4456	balance.jpg	1
-Plaque	865	plaque.jpg	1
-Radio	46804	radio.jpg	3
-Ring	422	ring.jpg	1
-Telephone	1000	phone.jpg	3
-Tops	232324	tops.jpg	4
-Trophy	1112	trophy.jpg	1
+Lock	2248	images/lock.jpg	1
+Farm machine	images/7635	tractor.jpg	2
+Forklift truck	images/288	truck.jpg	2
+Globe	4344	images/globe.jpg	3
+Balance	4456	images/balance.jpg	1
+Plaque	865	images/plaque.jpg	1
+Radio	46804	images/radio.jpg	3
+Ring	422	images/ring.jpg	1
+Telephone	1000	images/phone.jpg	3
+Tops	232324	images/tops.jpg	4
+Trophy	1112	images/trophy.jpg	1

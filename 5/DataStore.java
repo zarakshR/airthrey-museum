@@ -255,7 +255,7 @@ class DataStore {
         }
 
         if (scratch_top >= 0) {
-            list.setSelectedIndex(0);
+            list.setSelectedItem(null);
         }
     }
 
