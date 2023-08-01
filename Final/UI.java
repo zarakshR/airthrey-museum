@@ -22,11 +22,18 @@ public class UI extends JFrame {
 
         }
 
+        public String getText() {
+            return text.getText();
+        }
+
+        public void setText(String text) {
+            this.text.setText(text);
+        }
     }
 
     static class DrawingPanel extends JPanel {
 
-        private Image current_image = getToolkit().getImage("images/globe.jpg");
+        private Image current_image;
 
         public DrawingPanel() {
 
@@ -34,7 +41,9 @@ public class UI extends JFrame {
 
         }
 
-        public void setImage(Image newImage) {
+        public void setImage(Image image) {
+            this.current_image = image;
+            repaint();
         }
 
         public Image getImage() {
@@ -205,5 +214,27 @@ public class UI extends JFrame {
 
         category_filter.setSelectedItem(null);
 
+    }
+
+    // Make the main display panel "focus on" (i.e., change the name, category, image, etc to) the given treasure
+    public void focus(Treasure t) {
+        list.setSelectedValue(t, true);
+        drawing_panel.setImage(getToolkit().getImage(t.image_path()));
+        name.setText(t.name());
+        category.setText(t.category());
+        image_path.setText(t.image_path());
+    }
+
+    // Focus on nothing
+    public void focus() {
+        list.setSelectedValue(null, false);
+        drawing_panel.setImage(null);
+        name.setText("");
+        category.setText("");
+        image_path.setText("");
+    }
+
+    public String getSearchQuery() {
+        return query.getText();
     }
 }
