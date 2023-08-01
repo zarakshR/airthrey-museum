@@ -152,7 +152,23 @@ public class Museum implements ActionListener, ListSelectionListener
         }
 
         if (e.getSource() == ui.create_button) {
-            System.out.println("CREATE");
+            Treasure new_treasure = ui.getNewTreasure();
+            if (new_treasure == null) {
+                System.err.println("Cannot create: one or more fields empty");
+                return;
+            }
+
+            // Add the new treasure to the data and reload the entries, then focus on the newly created entry
+            store.treasures.add(new_treasure);
+
+            String selected_filter = (String) ui.category_filter.getSelectedItem();
+            if (selected_filter == null) {
+                ui.loadEntries(store.treasures);
+                ui.focus(new_treasure);
+            } else {
+                ui.loadEntries(store.treasures, selected_filter);
+                ui.focus(new_treasure);
+            }
         }
 
     }

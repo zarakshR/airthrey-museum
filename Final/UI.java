@@ -269,4 +269,23 @@ public class UI extends JFrame {
 
     }
 
+    // Get a new treasure that made from the values currently in the creat entry boxes
+    public Treasure getNewTreasure() {
+
+        String name = new_name.getText();
+        String number = new_number.getText();
+        String category = new_category.getText();
+        String image_path = new_image_path.getText();
+
+        if ((name.compareTo("") == 0)
+                || (number.compareTo("") == 0)
+                || (image_path.compareTo("") == 0)
+                || (category.compareTo("") == 0)) {
+            return null;
+        }
+
+        return new Treasure(name, number, category, image_path);
+
+    }
+
 }
