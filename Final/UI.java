@@ -76,6 +76,7 @@ public class UI extends JFrame {
     public JList<Treasure> list = new JList<>(list_model);
     public DefaultComboBoxModel<String> category_filter_model = new DefaultComboBoxModel<>();
     public JComboBox<String> category_filter = new JComboBox<>(category_filter_model);
+    public JButton clear_filter_button = new JButton("Clear Filter");
 
     private JPanel create_tab = new JPanel();
     private LabelledText new_name = new LabelledText("Name:", 20);
@@ -133,6 +134,9 @@ public class UI extends JFrame {
         catalogue_tab.add(new JLabel("Filter by Category"));
         category_filter.addActionListener(action_listener);
         catalogue_tab.add(category_filter);
+
+        clear_filter_button.addActionListener(action_listener);
+        catalogue_tab.add(clear_filter_button);
         // END CATALOGUE TAB
         // ----------------------------------------------------------------
         // SEARCH TAB - A text field to input search queries and buttons to search by name or catalogue number
