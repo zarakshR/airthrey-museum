@@ -1,6 +1,6 @@
 Lock	2248	images/lock.jpg	1
-Farm machine	images/7635	tractor.jpg	2
-Forklift truck	images/288	truck.jpg	2
+Farm machine	7635	images/tractor.jpg	2
+Forklift truck	288	images/truck.jpg	2
 Globe	4344	images/globe.jpg	3
 Balance	4456	images/balance.jpg	1
 Plaque	865	images/plaque.jpg	1
