@@ -15,6 +15,8 @@ public class Museum implements ActionListener, ListSelectionListener
         Museum museum = new Museum();
 
         museum.store.readData();
+        museum.ui.loadFilters(museum.store.treasures);
+        museum.ui.loadEntries(museum.store.treasures);
 
         museum.ui.setTitle("University of Airthrey Museum");
         museum.ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

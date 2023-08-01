@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashSet;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -164,16 +165,31 @@ public class UI extends JFrame {
         // ----------------------------------------------------------------
     }
 
+    public void loadEntries(HashSet<Treasure> treasures) {
 
+        list_model.addAll(treasures);
 
+    }
 
+    public void loadEntries(HashSet<Treasure> treasures, String category) {
 
+        for (Treasure treasure : treasures) {
+            if (treasure.category().compareTo(category) == 0) {
+                list_model.addElement(treasure);
             }
         }
 
     }
 
+    public void loadFilters(HashSet<Treasure> treasures) {
 
+        // Use a set for the filters so duplicates get ignored automatically
+        HashSet<String> filter_set = new HashSet<>();
+        for (Treasure treasure : treasures) {
+            filter_set.add(treasure.category());
+        }
+
+        category_filter_model.addAll(filter_set);
 
     }
 
