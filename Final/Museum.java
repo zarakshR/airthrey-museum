@@ -13,10 +13,12 @@ public class Museum implements ActionListener, ListSelectionListener {
 
         Museum museum = new Museum();
 
+        // Initialize the GUI the first time around. These will be refreshed as needed by our action handlers.
         museum.store.readData();
         museum.ui.loadFilters(museum.store.treasures);
         museum.ui.loadEntries(museum.store.treasures);
 
+        // Set some application level settings
         museum.ui.setTitle("University of Airthrey Museum");
         museum.ui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         museum.ui.setSize(1400, 600);
@@ -54,6 +56,12 @@ public class Museum implements ActionListener, ListSelectionListener {
 
             Graphics graphics = print_job.getGraphics();
 
+            // Print -
+            //      Name
+            //      Category
+            //      Image Path
+            //      Image
+
             int xLocation = 10;
             int yLocation = 20;
             graphics.drawString("Name: " + t.name(), xLocation, yLocation);
@@ -65,7 +73,7 @@ public class Museum implements ActionListener, ListSelectionListener {
             graphics.drawString("Image Path: " + t.image_path(), xLocation, yLocation);
 
             yLocation += 30;
-            graphics.drawImage(ui.drawing_panel.getImage(), xLocation, yLocation, 400, 400, null);
+            graphics.drawImage(ui.drawing_panel.getImage(), xLocation, yLocation, 400, 400, null); // TODO: How to scale image?
 
             graphics.dispose();
             print_job.end();
@@ -124,7 +132,7 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
-            // Refocus on the just-undeleted treasure
+            // Refocus on the just-restored treasure
             ui.loadEntries(store.treasures);
             ui.focus(undone);
         }
@@ -159,6 +167,7 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
+            // Focus on the just found search result
             ui.focus(search_result);
         }
 
@@ -177,6 +186,7 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
+            // Focus on the just found search result
             ui.focus(search_result);
         }
 
@@ -190,6 +200,7 @@ public class Museum implements ActionListener, ListSelectionListener {
             // Add the new treasure to the data and reload the entries, then focus on the newly created entry
             store.treasures.add(new_treasure);
 
+            // Use a filtered reload if a filter is selected
             String selected_filter = (String) ui.category_filter.getSelectedItem();
             if (selected_filter == null) {
                 ui.loadEntries(store.treasures);

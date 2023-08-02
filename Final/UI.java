@@ -5,6 +5,9 @@ import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.event.*;
 
+// This class is a combination of a JLabel and a JTextField.
+// It is separated out into a class because the combination of Label + Text needs to be used multiple times throughout the program
+//  and it would be repetitive and error prone to specify a separate JLabel and JTextField everytime we wanted to do that.
 class LabelledText extends JPanel {
 
     private JLabel label;
@@ -65,8 +68,11 @@ public class UI extends JFrame {
 
     Container container = getContentPane();
 
+    // This stores the list of treasures
     private DefaultListModel<Treasure> list_model = new DefaultListModel<>();
 
+    // This is the main display panel consisting of an DrawingPanel and LabelledText fields for the info for the currently selected entry
+    // The display panel occupies the right half of the screen
     private JPanel display = new JPanel();
     public DrawingPanel drawing_panel = new DrawingPanel(); // This has to be public so Museum can use it for pprinting. Maybe change later?
     private LabelledText number = new LabelledText("Catalogue No.:", 5);
@@ -74,6 +80,8 @@ public class UI extends JFrame {
     private LabelledText category = new LabelledText("Category:", 10);
     private LabelledText image_path = new LabelledText("Image Path:", 20);
 
+    // These buttons are placed below the main display panel. The provide buttons for saving, deleting, updating, etc;
+    // The buttons are put into their own JPanel to make the layout cleaner (the buttons stay in one row).
     private JPanel control_buttons = new JPanel();
     public JButton save = new JButton("Save Changes");
     public JButton print = new JButton("Print Entry");
@@ -81,14 +89,17 @@ public class UI extends JFrame {
     public JButton delete = new JButton("Delete Entry");
     public JButton undo = new JButton("Undo Deletion");
 
+    // This occupies the left half of the GUI and provides tabs to switch between the list of treasures, a search panel, and a new treasure panel
     private JTabbedPane tabbed_pane = new JTabbedPane();
 
+    // This shows a list of all treasures with an option to filter by category
     private JPanel catalogue_tab = new JPanel();
     public JList<Treasure> list = new JList<>(list_model);
     public DefaultComboBoxModel<String> category_filter_model = new DefaultComboBoxModel<>();
     public JComboBox<String> category_filter = new JComboBox<>(category_filter_model);
     public JButton clear_filter_button = new JButton("Clear Filter");
 
+    // This allows the creation of a new treasure
     private JPanel create_tab = new JPanel();
     private LabelledText new_name = new LabelledText("Name:", 20);
     private LabelledText new_number = new LabelledText("Catalogue No.:", 5);
@@ -96,6 +107,7 @@ public class UI extends JFrame {
     private LabelledText new_image_path = new LabelledText("Image Path:", 20);
     public JButton create_button = new JButton("Create New Entry");
 
+    // This allows searching by name or catalogue number
     private JPanel search_tab = new JPanel();
     private LabelledText query = new LabelledText("Query:", 20);
     public JButton name_search_button = new JButton("Search By Name");
@@ -104,11 +116,15 @@ public class UI extends JFrame {
     private ActionListener action_listener;
     private ListSelectionListener list_selection_listener;
 
+    // Let the constructor accept an ActionListener and a (possibly different) ListSelectionListener so that the software is more modular and we can
+    // switch out Museum.java for a custom action handler(s) later if needed.
     public <T extends ActionListener, U extends ListSelectionListener> UI(T action_listener, U list_selection_listener) {
 
         this.action_listener = action_listener;
         this.list_selection_listener = list_selection_listener;
 
+        // Since container only contains tabbed_pane and display, set the layout to be along the X-axis
+        // this ensures that tabbed_pane and display take up the left and right halves of the screen respectively
         container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
 
         container.add(tabbed_pane);
@@ -250,7 +266,7 @@ public class UI extends JFrame {
 
     }
 
-    // Get a new treasure that made from the values currently in the description boxes
+    // Get a new treasure made from the values currently in the description boxes
     public Treasure getEditedTreasure() {
 
         String new_name = name.getText();
@@ -269,7 +285,7 @@ public class UI extends JFrame {
 
     }
 
-    // Get a new treasure that made from the values currently in the creat entry boxes
+    // Get a new treasure made from the values currently in the creat entry boxes
     public Treasure getNewTreasure() {
 
         String name = new_name.getText();

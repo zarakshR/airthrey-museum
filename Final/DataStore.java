@@ -21,7 +21,7 @@ class DataStore {
 
     private String filename;
     public HashSet<Treasure> treasures = new HashSet<>();
-    private Stack<Treasure> undo_stack = new Stack<>();
+    private Stack<Treasure> undo_stack = new Stack<>(); // Use a stack for deleted treasures since we need LIFO semantics for undoing
 
     public DataStore(String filename) {
 
@@ -35,26 +35,33 @@ class DataStore {
 
             BufferedReader input = new BufferedReader(new FileReader(filename));
 
+            // A string "buffer" to store each line while we process it.
             String record;
 
             while ((record = input.readLine()) != null) {
 
+                // Split the read in line along the tab character
                 String[] fields = record.split("\t");
 
                 if (fields.length > 4) {
-                    System.err.println("WARNING: Possibly extra data fields in " + filename);
+                    // If there are more than four fields, we can still make use of the data, but atleast let the user know something is wrong
+                    System.err.println("WARNING: Extra data fields in " + filename);
                     System.err.println("Ignoring any additional fields");
                 } else if (fields.length < 4) {
-                    System.err.println("WARNING: Missing data fields in " + filename);
-                    System.err.println("The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
+                    // If there are less than four fields, the data is corrupted and it is not safe to continue
+                    System.err.println("ERROR: Missing data fields in " + filename);
+                    System.err.println(
+                            "The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
                     System.exit(1);
                 }
 
+                // "Destructure" the array to get the data in each field
                 String catalogue_number = fields[0];
                 String name = fields[1];
                 String image_path = fields[2];
                 String category = fields[3];
 
+                // If any of the fields is empty, it is an error and we should abort
                 if ((catalogue_number.compareTo("") == 0)
                         || (name.compareTo("") == 0)
                         || (image_path.compareTo("") == 0)
@@ -89,6 +96,7 @@ class DataStore {
 
             BufferedWriter output = new BufferedWriter(new FileWriter(filename));
 
+            // Just loop through each treasure and output its fields tab-delimited
             for (Treasure treasure : treasures) {
                 output.write(
                         treasure.catalogue_number()
@@ -134,11 +142,13 @@ class DataStore {
 
     }
 
+    // Deletes a treasure, but silently adds it to the undo stack
     public void delete(Treasure t) {
         undo_stack.add(t);
         treasures.remove(t);
     }
 
+    // Return last treasure added to undo stack or null if none exists
     public Treasure undo() {
         try {
             Treasure t = undo_stack.pop();
