@@ -1,11 +1,11 @@
-2248	Lock	images/lock.jpg	Furniture
-7635	Farm machine	images/tractor.jpg	Vehicle
-288	Forklift truck	images/truck.jpg	Vehicle
-4344	Globe	images/globe.jpg	Technology
-4456	Balance	images/balance.jpg	Tools
-865	Plaque	images/plaque.jpg	Furniture
-46804	Radio	images/radio.jpg	Technology
-422	Ring	images/ring.jpg	Clothing
-1000	Telephone	images/phone.jpg	Technology
-232324	Tops	images/tops.jpg	Clothing
-1112	Trophy	images/trophy.jpg	Furniture
+2248	Lock	images/lock.jpg	Furniture	China
+7635	Farm machine	images/tractor.jpg	Vehicle	America
+288	Forklift truck	images/truck.jpg	Vehicle	America
+4344	Globe	images/globe.jpg	Technology	Italy
+4456	Balance	images/balance.jpg	Tools	India
+865	Plaque	images/plaque.jpg	Furniture	England
+46804	Radio	images/radio.jpg	Technology	Italy
+422	Ring	images/ring.jpg	Clothing	England
+1000	Telephone	images/phone.jpg	Technology	America
+232324	Tops	images/tops.jpg	Clothing	England
+1112	Trophy	images/trophy.jpg	Furniture	China

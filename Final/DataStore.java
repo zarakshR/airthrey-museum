@@ -3,16 +3,17 @@ import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Stack;
 
-record Treasure(String catalogue_number, String name, String category, String image_path) {
+record Treasure(String catalogue_number, String name, String category, String image_path, String country) {
 
     @Override
     public String toString() {
         return "(" + catalogue_number + ") " + name;
     }
+
 }
 
 // The data format is -
-// Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category
+// Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category <TAB> Country
 //
 // The data file must have each entry on a separate line following the format above exactly
 // None of the fields may be empty - If it is, the application quits 1 as the return code
@@ -43,15 +44,15 @@ class DataStore {
                 // Split the read in line along the tab character
                 String[] fields = record.split("\t");
 
-                if (fields.length > 4) {
-                    // If there are more than four fields, we can still make use of the data, but atleast let the user know something is wrong
+                if (fields.length > 5) {
+                    // If there are more than five fields, we can still make use of the data, but atleast let the user know something is wrong
                     System.err.println("WARNING: Extra data fields in " + filename);
                     System.err.println("Ignoring any additional fields");
-                } else if (fields.length < 4) {
-                    // If there are less than four fields, the data is corrupted and it is not safe to continue
+                } else if (fields.length < 5) {
+                    // If there are less than five fields, the data is corrupted and it is not safe to continue
                     System.err.println("ERROR: Missing data fields in " + filename);
                     System.err.println(
-                            "The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
+                            "The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category <TAB> Country");
                     System.exit(1);
                 }
 
@@ -60,18 +61,20 @@ class DataStore {
                 String name = fields[1];
                 String image_path = fields[2];
                 String category = fields[3];
+                String country = fields[4];
 
                 // If any of the fields is empty, it is an error and we should abort
                 if ((catalogue_number.compareTo("") == 0)
                         || (name.compareTo("") == 0)
                         || (image_path.compareTo("") == 0)
-                        || (category.compareTo("") == 0)) {
+                        || (category.compareTo("") == 0)
+                        || (country.compareTo("") == 0)) {
                     System.err.println("Corrupted data in " + filename + ": One or more fields are empty");
-                    System.err.println("The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
+                    System.err.println("The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category <TAB> Country");
                     System.exit(1);
                 }
 
-                treasures.add(new Treasure(name, catalogue_number, category, image_path));
+                treasures.add(new Treasure(name, catalogue_number, category, image_path, country));
 
             }
 
@@ -102,7 +105,8 @@ class DataStore {
                         treasure.catalogue_number()
                             + "\t" + treasure.name()
                             + "\t" + treasure.image_path()
-                            + "\t" + treasure.category() + "\n");
+                            + "\t" + treasure.category()
+                            + "\t" + treasure.country() + "\n");
             }
 
             output.close();

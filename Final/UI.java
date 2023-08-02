@@ -79,6 +79,7 @@ public class UI extends JFrame {
     private LabelledText name = new LabelledText("Name:", 20);
     private LabelledText category = new LabelledText("Category:", 10);
     private LabelledText image_path = new LabelledText("Image Path:", 20);
+    private LabelledText country = new LabelledText("Country:", 10);
 
     // These buttons are placed below the main display panel. The provide buttons for saving, deleting, updating, etc;
     // The buttons are put into their own JPanel to make the layout cleaner (the buttons stay in one row).
@@ -97,7 +98,9 @@ public class UI extends JFrame {
     public JList<Treasure> list = new JList<>(list_model);
     public DefaultComboBoxModel<String> category_filter_model = new DefaultComboBoxModel<>();
     public JComboBox<String> category_filter = new JComboBox<>(category_filter_model);
-    public JButton clear_filter_button = new JButton("Clear Filter");
+    public DefaultComboBoxModel<String> country_filter_model = new DefaultComboBoxModel<>();
+    public JComboBox<String> country_filter = new JComboBox<>(country_filter_model);
+    public JButton clear_filter_button = new JButton("Clear Filters");
 
     // This allows the creation of a new treasure
     private JPanel create_tab = new JPanel();
@@ -105,6 +108,7 @@ public class UI extends JFrame {
     private LabelledText new_number = new LabelledText("Catalogue No.:", 5);
     private LabelledText new_category = new LabelledText("Category:", 10);
     private LabelledText new_image_path = new LabelledText("Image Path:", 20);
+    private LabelledText new_country = new LabelledText("Country:", 10);
     public JButton create_button = new JButton("Create New Entry");
 
     // This allows searching by name or catalogue number
@@ -138,6 +142,7 @@ public class UI extends JFrame {
         display.add(name);
         display.add(category);
         display.add(image_path);
+        display.add(country);
         display.add(control_buttons);
 
         // Buttons for saving changes, printing, updating changes, deleting entries, and undoing deletions
@@ -164,6 +169,10 @@ public class UI extends JFrame {
         category_filter.addActionListener(action_listener);
         catalogue_tab.add(category_filter);
 
+        catalogue_tab.add(new JLabel("Filter by Country"));
+        country_filter.addActionListener(action_listener);
+        catalogue_tab.add(country_filter);
+
         clear_filter_button.addActionListener(action_listener);
         catalogue_tab.add(clear_filter_button);
         // END CATALOGUE TAB
@@ -187,6 +196,7 @@ public class UI extends JFrame {
         create_tab.add(new_number);
         create_tab.add(new_category);
         create_tab.add(new_image_path);
+        create_tab.add(new_country);
 
         create_button.addActionListener(action_listener);
         create_tab.add(create_button);
@@ -233,6 +243,7 @@ public class UI extends JFrame {
     public void clearFilters() {
 
         category_filter.setSelectedItem(null);
+        country_filter.setSelectedItem(null);
 
     }
 
@@ -245,6 +256,7 @@ public class UI extends JFrame {
         number.setText(t.catalogue_number());
         category.setText(t.category());
         image_path.setText(t.image_path());
+        country.setText(t.country());
 
     }
 
@@ -257,6 +269,7 @@ public class UI extends JFrame {
         number.setText("");
         category.setText("");
         image_path.setText("");
+        country.setText("");
 
     }
 
@@ -273,15 +286,17 @@ public class UI extends JFrame {
         String new_number = number.getText();
         String new_category = category.getText();
         String new_image_path = image_path.getText();
+        String new_country = country.getText();
 
         if ((new_name.compareTo("") == 0)
                 || (new_number.compareTo("") == 0)
                 || (new_image_path.compareTo("") == 0)
-                || (new_category.compareTo("") == 0)) {
+                || (new_category.compareTo("") == 0)
+                || (new_country.compareTo("") == 0)) {
             return null;
         }
 
-        return new Treasure(new_name, new_number, new_category, new_image_path);
+        return new Treasure(new_name, new_number, new_category, new_image_path, new_country);
 
     }
 
@@ -292,15 +307,17 @@ public class UI extends JFrame {
         String number = new_number.getText();
         String category = new_category.getText();
         String image_path = new_image_path.getText();
+        String country = new_country.getText();
 
         if ((name.compareTo("") == 0)
                 || (number.compareTo("") == 0)
                 || (image_path.compareTo("") == 0)
-                || (category.compareTo("") == 0)) {
+                || (category.compareTo("") == 0)
+                || (country.compareTo("") == 0)) {
             return null;
         }
 
-        return new Treasure(name, number, category, image_path);
+        return new Treasure(name, number, category, image_path, country);
 
     }
 
