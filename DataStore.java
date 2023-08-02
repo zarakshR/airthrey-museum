@@ -3,7 +3,7 @@ import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Stack;
 
-record Treasure(String catalogue_number, String name, String category, String image_path, String country) {
+record Treasure(String name, String catalogue_number, String category, String image_path, String country) {
 
     @Override
     public String toString() {
