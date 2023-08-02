@@ -97,6 +97,7 @@ public class UI extends JFrame {
     private JPanel catalogue_tab = new JPanel();
     public JList<Treasure> list = new JList<>(list_model);
     public DefaultComboBoxModel<String> category_filter_model = new DefaultComboBoxModel<>();
+    private JPanel filters = new JPanel();
     public JComboBox<String> category_filter = new JComboBox<>(category_filter_model);
     public DefaultComboBoxModel<String> country_filter_model = new DefaultComboBoxModel<>();
     public JComboBox<String> country_filter = new JComboBox<>(country_filter_model);
@@ -164,17 +165,20 @@ public class UI extends JFrame {
 
         list.addListSelectionListener(list_selection_listener);
         catalogue_tab.add(list);
+        catalogue_tab.add(filters);
 
-        catalogue_tab.add(new JLabel("Filter by Category"));
+        filters.setLayout(new BoxLayout(filters, BoxLayout.Y_AXIS));
+
+        filters.add(new JLabel("Filter by Category"));
         category_filter.addActionListener(action_listener);
-        catalogue_tab.add(category_filter);
+        filters.add(category_filter);
 
-        catalogue_tab.add(new JLabel("Filter by Country"));
+        filters.add(new JLabel("Filter by Country"));
         country_filter.addActionListener(action_listener);
-        catalogue_tab.add(country_filter);
+        filters.add(country_filter);
 
         clear_filter_button.addActionListener(action_listener);
-        catalogue_tab.add(clear_filter_button);
+        filters.add(clear_filter_button);
         // END CATALOGUE TAB
         // ----------------------------------------------------------------
         // SEARCH TAB - A text field to input search queries and buttons to search by name or catalogue number
