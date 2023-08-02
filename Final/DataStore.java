@@ -3,7 +3,7 @@ import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Stack;
 
-record Treasure(String name, String catalogue_number, String category, String image_path) {
+record Treasure(String catalogue_number, String name, String category, String image_path) {
 
     @Override
     public String toString() {
@@ -41,6 +41,15 @@ class DataStore {
 
                 String[] fields = record.split("\t");
 
+                if (fields.length > 4) {
+                    System.err.println("WARNING: Possibly extra data fields in " + filename);
+                    System.err.println("Ignoring any additional fields");
+                } else if (fields.length < 4) {
+                    System.err.println("WARNING: Missing data fields in " + filename);
+                    System.err.println("The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
+                    System.exit(1);
+                }
+
                 String catalogue_number = fields[0];
                 String name = fields[1];
                 String image_path = fields[2];
@@ -51,6 +60,7 @@ class DataStore {
                         || (image_path.compareTo("") == 0)
                         || (category.compareTo("") == 0)) {
                     System.err.println("Corrupted data in " + filename + ": One or more fields are empty");
+                    System.err.println("The data store must be in the following format: Catalogue Number <TAB> Name <TAB> Image Path <TAB> Category");
                     System.exit(1);
                 }
 
@@ -68,7 +78,7 @@ class DataStore {
         } catch (IOException e) {
 
             System.err.println(e);
-            System.exit(3);
+            System.exit(2);
 
         }
 
@@ -81,12 +91,18 @@ class DataStore {
 
             for (Treasure treasure : treasures) {
                 output.write(
-                        treasure.catalogue_number() + "\t" + treasure.name() + "\t" + treasure.image_path() + "\t" + treasure.category() + "\n");
+                        treasure.catalogue_number()
+                            + "\t" + treasure.name()
+                            + "\t" + treasure.image_path()
+                            + "\t" + treasure.category() + "\n");
             }
 
             output.close();
 
         } catch (IOException e) {
+
+            System.err.println(e);
+            System.exit(3);
 
         }
 
