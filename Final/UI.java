@@ -204,39 +204,63 @@ public class UI extends JFrame {
         // ----------------------------------------------------------------
     }
 
-    // Load all treasures from the given hash set into list_model
+    // Load all treasures from the given hash set into list_model; takes active filters into account
     public void loadEntries(HashSet<Treasure> treasures) {
 
         list_model.removeAllElements();
-        list_model.addAll(treasures);
 
-    }
+        String selected_category = (String) category_filter.getSelectedItem();
+        String selected_country = (String) country_filter.getSelectedItem();
 
-    // Like above but only add the treasures whose categories match the given category
-    public void loadEntries(HashSet<Treasure> treasures, String category) {
+        if ((selected_category == null) && (selected_country == null)) {
 
-        list_model.removeAllElements();
+            list_model.addAll(treasures);
 
-        for (Treasure treasure : treasures) {
-            if (treasure.category().compareTo(category) == 0) {
-                list_model.addElement(treasure);
+        } else if (selected_category == null) {
+
+            for (Treasure treasure : treasures) {
+                if (treasure.country().compareTo(selected_country) == 0) {
+                    list_model.addElement(treasure);
+                }
             }
+
+        } else if (selected_country == null) {
+
+            for (Treasure treasure : treasures) {
+                if (treasure.category().compareTo(selected_category) == 0) {
+                    list_model.addElement(treasure);
+                }
+            }
+
+        } else {
+
+            for (Treasure treasure : treasures) {
+                if ((treasure.category().compareTo(selected_category) == 0) && (treasure.country().compareTo(selected_country) == 0)) {
+                    list_model.addElement(treasure);
+                }
+            }
+
         }
 
     }
 
-    // Find all unique categories from the given hash set and add them into category_filter_model
+    // Find all unique categories and countries from the given hash set and add them into category_filter_model and country_filter_model
     public void loadFilters(HashSet<Treasure> treasures) {
 
         category_filter_model.removeAllElements();
+        country_filter_model.removeAllElements();
 
         // Use a set for the filters so duplicates get ignored automatically
         HashSet<String> filter_set = new HashSet<>();
+        HashSet<String> country_set = new HashSet<>();
+
         for (Treasure treasure : treasures) {
             filter_set.add(treasure.category());
+            country_set.add(treasure.country());
         }
 
         category_filter_model.addAll(filter_set);
+        country_filter_model.addAll(country_set);
 
     }
 

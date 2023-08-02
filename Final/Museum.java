@@ -92,18 +92,11 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
-            // remove old treasure and add new one, then reload entries, using a filter if one is selected
+            // remove old treasure and add new one, then reload entries
             store.treasures.remove(old);
             store.treasures.add(edited);
 
-            String selected_filter = (String) ui.category_filter.getSelectedItem();
-            if (selected_filter == null) {
-                ui.loadEntries(store.treasures);
-                ui.focus(edited);
-            } else {
-                ui.loadEntries(store.treasures, selected_filter);
-                ui.focus(edited);
-            }
+            ui.loadEntries(store.treasures);
 
         }
 
@@ -116,13 +109,8 @@ public class Museum implements ActionListener, ListSelectionListener {
 
             store.delete(selected_value);
 
-            // Reload the entries; make sure to check if a filter is selected and reload appropriately
-            String selected_filter = (String) ui.category_filter.getSelectedItem();
-            if (selected_filter == null) {
-                ui.loadEntries(store.treasures);
-            } else {
-                ui.loadEntries(store.treasures, selected_filter);
-            }
+            // Reload the entries;
+            ui.loadEntries(store.treasures);
         }
 
         if (e.getSource() == ui.undo) {
@@ -137,15 +125,8 @@ public class Museum implements ActionListener, ListSelectionListener {
             ui.focus(undone);
         }
 
-        if (e.getSource() == ui.category_filter) {
-            String selected_filter = (String) ui.category_filter.getSelectedItem();
-
-            // If nothing is selected, then load all entries, otherwise load entries filtered by the selected filter
-            if (selected_filter == null) {
-                ui.loadEntries(store.treasures);
-            } else {
-                ui.loadEntries(store.treasures, selected_filter);
-            }
+        if ((e.getSource() == ui.category_filter) || (e.getSource() == ui.country_filter)) {
+            ui.loadEntries(store.treasures);
         }
 
         if (e.getSource() == ui.clear_filter_button) {
@@ -200,15 +181,8 @@ public class Museum implements ActionListener, ListSelectionListener {
             // Add the new treasure to the data and reload the entries, then focus on the newly created entry
             store.treasures.add(new_treasure);
 
-            // Use a filtered reload if a filter is selected
-            String selected_filter = (String) ui.category_filter.getSelectedItem();
-            if (selected_filter == null) {
-                ui.loadEntries(store.treasures);
-                ui.focus(new_treasure);
-            } else {
-                ui.loadEntries(store.treasures, selected_filter);
-                ui.focus(new_treasure);
-            }
+            // reload the entries
+            ui.loadEntries(store.treasures);
         }
 
     }
