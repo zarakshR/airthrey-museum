@@ -63,10 +63,12 @@ class DataStore {
         } catch (FileNotFoundException e) {
 
             System.err.println(e);
+            System.exit(2);
 
         } catch (IOException e) {
 
             System.err.println(e);
+            System.exit(3);
 
         }
 

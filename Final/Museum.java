@@ -42,13 +42,13 @@ public class Museum implements ActionListener, ListSelectionListener {
             Treasure t = ui.list.getSelectedValue();
 
             if (t == null) {
-                System.err.println("Attempting to print with nothing selected");
+                ui.notify("Select an entry before attempting to print it!");
                 return;
             }
 
             PrintJob print_job = ui.getToolkit().getPrintJob(ui, "Printing " + t, null);
             if (print_job == null) {
-                System.err.println("Printing failed or cancelled");
+                ui.notify("Printing failed or cancelled");
                 return;
             }
 
@@ -74,13 +74,13 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.update) {
             Treasure old = ui.list.getSelectedValue();
             if (old == null) {
-                System.err.println("Attempting to update non-selected value");
+                ui.notify("Select an entry before attempting to update it");
                 return;
             }
 
             Treasure edited = ui.getEditedTreasure();
             if (edited == null) {
-                System.err.println("Cannot update: One or more fileds empty");
+                ui.notify("Cannot update: One or more fields are empty. Fill in all the fields before attempting to update it");
                 return;
             }
 
@@ -102,7 +102,7 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.delete) {
             Treasure selected_value = ui.list.getSelectedValue();
             if (selected_value == null) {
-                System.err.println("nothing selected");
+                ui.notify("Select an entry before attempting to delete it!");
                 return;
             }
 
@@ -120,7 +120,7 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.undo) {
             Treasure undone = store.undo();
             if (undone == null) {
-                System.err.println("Undo stack empty");
+                ui.notify("Cannot undo: No undo history left!");
                 return;
             }
 
@@ -147,15 +147,15 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.name_search_button) {
             String query = ui.getSearchQuery();
 
-            if (query == null) {
-                System.err.println("query is null");
+            if (query.compareTo("") == 0) {
+                ui.notify("No query given for search!");
                 return;
             }
 
             Treasure search_result = store.searchByName(query);
 
             if (search_result == null) {
-                System.err.println("No match found");
+                ui.notify("No matching name found for " + query);
                 return;
             }
 
@@ -165,15 +165,15 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.number_search_button) {
             String query = ui.getSearchQuery();
 
-            if (query == null) {
-                System.err.println("query is null");
+            if (query.compareTo("") == 0) {
+                ui.notify("No query given for search!");
                 return;
             }
 
             Treasure search_result = store.searchByNumber(query);
 
             if (search_result == null) {
-                System.err.println("No match found");
+                ui.notify("No matching number found for " + query);
                 return;
             }
 
@@ -183,7 +183,7 @@ public class Museum implements ActionListener, ListSelectionListener {
         if (e.getSource() == ui.create_button) {
             Treasure new_treasure = ui.getNewTreasure();
             if (new_treasure == null) {
-                System.err.println("Cannot create: one or more fields empty");
+                ui.notify("Cannot create: One or more fields are empty, fill in all fields before attempting to create a treasure");
                 return;
             }
 

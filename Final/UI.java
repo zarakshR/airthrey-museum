@@ -288,4 +288,7 @@ public class UI extends JFrame {
 
     }
 
+    public void notify(String msg) {
+        JOptionPane.showMessageDialog(null, msg);
+    }
 }
