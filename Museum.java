@@ -56,7 +56,7 @@ public class Museum implements ActionListener, ListSelectionListener {
 
             Graphics graphics = print_job.getGraphics();
 
-            // Print -
+            // Prints -
             //      Name
             //      Category
             //      Image Path
@@ -124,9 +124,8 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
+            // Reload entries and refocus on the just-restored treasure
             ui.loadEntries(store.treasures);
-
-            // Refocus on the just-restored treasure
             ui.focus(undone);
         }
 
