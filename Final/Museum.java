@@ -92,11 +92,12 @@ public class Museum implements ActionListener, ListSelectionListener {
                 return;
             }
 
-            // remove old treasure and add new one, then reload entries
+            // remove old treasure and add new one, then reload entries and change focus to the newly edited entry
             store.treasures.remove(old);
             store.treasures.add(edited);
 
             ui.loadEntries(store.treasures);
+            ui.focus(edited);
 
         }
 
@@ -109,19 +110,23 @@ public class Museum implements ActionListener, ListSelectionListener {
 
             store.delete(selected_value);
 
-            // Reload the entries;
+            // Reload the entries; and change focus to nothing
             ui.loadEntries(store.treasures);
+            ui.focus();
+
         }
 
         if (e.getSource() == ui.undo) {
             Treasure undone = store.undo();
+
             if (undone == null) {
                 ui.notify("Cannot undo: No undo history left!");
                 return;
             }
 
-            // Refocus on the just-restored treasure
             ui.loadEntries(store.treasures);
+
+            // Refocus on the just-restored treasure
             ui.focus(undone);
         }
 
@@ -181,8 +186,9 @@ public class Museum implements ActionListener, ListSelectionListener {
             // Add the new treasure to the data and reload the entries, then focus on the newly created entry
             store.treasures.add(new_treasure);
 
-            // reload the entries
+            // reload the entries and focus on the just created entry
             ui.loadEntries(store.treasures);
+            ui.focus(new_treasure);
         }
 
     }

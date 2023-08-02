@@ -345,6 +345,7 @@ public class UI extends JFrame {
 
     }
 
+    // Show a message to the user
     public void notify(String msg) {
         JOptionPane.showMessageDialog(null, msg);
     }
